@@ -10,11 +10,12 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
+my $VERSION = '1.3';
 BEGIN { $| = 1; print "1..11\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Log::TraceMessages qw(t d trace dmp);
 $loaded = 1;
-print 'not ' if ${Log::TraceMessages::VERSION} ne '1.1';
+print 'not ' if ${Log::TraceMessages::VERSION} ne $VERSION;
 print "ok 1\n";
 
 ######################### End of black magic.

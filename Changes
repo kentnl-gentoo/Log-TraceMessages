@@ -1,3 +1,20 @@
+2003-01-26 17:58  ed
+
+	* TraceMessages.pm, test.pl: Version 1.3.  test.pl now has its
+	version number in a variable $VERSION where it can be easily
+	checked to see it matches that in TraceMessages.pm.  The only
+	reason for this release is that the last one had the numbers
+	mismatched!
+
+2003-01-26 17:55  ed
+
+	* mkdist: Use set -e to exit when any command fails (we don't want
+	to start rming things when cd has failed, for example).
+	
+	Changed to use CVS and cvs2cl rather than RCS.
+	
+	Check that the versions in test.pl and TraceMessages.pm match.
+
 2002-10-25 16:05  ed
 
 	* README: Updated for version 1.2.

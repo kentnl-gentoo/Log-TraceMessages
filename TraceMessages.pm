@@ -6,7 +6,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 require Exporter; require AutoLoader; @ISA = qw(Exporter AutoLoader);
 @EXPORT = qw(); @EXPORT_OK = qw(t trace d dmp);
 use vars '$VERSION';
-$VERSION = '1.2';
+$VERSION = '1.3';
 
 use FileHandle;
 
