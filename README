@@ -1,4 +1,4 @@
-Log::TraceMessages, version 1.0
+Log::TraceMessages, version 1.1
 
 This module is a better way of putting 'hello there' trace messages in
 your code.  It lets you turn tracing on and off without commenting out
@@ -17,6 +17,11 @@ From the pod documentation:
       t 'this message will not be printed';
   }
 
+  $Log::TraceMessages::Logfile = 'log.out';
+  t 'this message will go to the file log.out';
+  $Log::TraceMessages::Logfile = undef;
+  t 'and this message is on stderr as usual';
+
   # For a CGI program producing HTML
   $Log::TraceMessages::CGI = 1;
 
@@ -26,5 +31,7 @@ From the pod documentation:
 This is free software and you may distribute it under the same terms
 as perl itself.  There is no warranty.
 
--- Ed Avis, epa98@doc.ic.ac.uk, 2000-10-15
+This version adds support for writing to a log file which can be
+local()ized in the same way as turning trace on and off.
 
+-- Ed Avis, epa98@doc.ic.ac.uk, 2001-11-28

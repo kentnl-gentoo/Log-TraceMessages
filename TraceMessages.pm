@@ -3,14 +3,11 @@ package Log::TraceMessages;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-require Exporter;
-require AutoLoader;
+require Exporter; require AutoLoader; @ISA = qw(Exporter AutoLoader);
+@EXPORT = qw(); @EXPORT_OK = qw(t trace d dmp);
+use vars '$VERSION'; $VERSION = '1.1';
 
-@ISA = qw(Exporter AutoLoader);
-@EXPORT = qw();
-@EXPORT_OK = qw(t trace d dmp);
-use vars '$VERSION';
-$VERSION = '1.0';
+use FileHandle;
 
 =pod
 
@@ -28,6 +25,11 @@ Log::TraceMessages - Perl extension for trace messages used in debugging
       local $Log::TraceMessages::On = 0;
       t 'this message will not be printed';
   }
+
+  $Log::TraceMessages::Logfile = 'log.out';
+  t 'this message will go to the file log.out';
+  $Log::TraceMessages::Logfile = undef;
+  t 'and this message is on stderr as usual';
 
   # For a CGI program producing HTML
   $Log::TraceMessages::CGI = 1;
@@ -58,11 +60,27 @@ $On = 0;
 =pod
 
 
+=item $Log::TraceMessages::Logfile
+
+The name of the file to which trace should be appended.  If this is
+undefined (which is the default), then trace will be written to
+stderr, or to stdout if C<$CGI> is set.
+
+=cut
+use vars '$Logfile';
+$Logfile = undef;
+my $curr_Logfile = $Logfile;
+my $fh = undef;
+
+=pod
+
+
 =item $Log::TraceMessages::CGI
 
 Flag controlling whether the program printing trace messages is a CGI
 program (default is no).  This means that trace messages will be
-printed as HTML to stdout, so they appear in the output page.
+printed as HTML.  Unless C<$Logfile> is also set, messages will be
+printed to stdout so they appear in the output page.
 
 =cut
 use vars '$CGI';
@@ -73,21 +91,54 @@ $CGI = 0;
 
 =item t(messages)
 
-Print the given strings, if tracing is enabled.  Unless
-$Log::TraceMessages::CGI is true (see below), each message will be
-printed to standard error with a newline appended.
+Print the given strings, if tracing is enabled.  Unless C<$CGI> is
+true or C<$Logfile> is set, each message will be printed to stderr
+with a newline appended.
 
 =cut
 sub t(@) {
     return unless $On;
+    
+    if (defined $Logfile) {
+	unless (defined $curr_Logfile and $curr_Logfile eq $Logfile) {
+	    if (defined $fh) {
+		close $fh unless ($fh eq \*STDOUT or $fh eq \*STDERR);
+	    }
+	    undef $fh;
+	}
+
+	if (not defined $fh) {
+	    $fh = new FileHandle(">>$Logfile")
+	      or die "cannot append to $Logfile: $!";
+
+	    # Autoflushing here is really just a kludge to let the
+	    # test suite work.  Although it could be useful for
+	    # 'tail -f' etc.
+	    # 
+	    $fh->autoflush(1);
+
+	    $curr_Logfile = $Logfile;
+	}
+    }
+    else {
+	if (defined $fh) {
+	    close $fh unless ($fh eq \*STDOUT or $fh eq \*STDERR);
+	}
+	$fh = $CGI ? \*STDOUT : \*STDERR;
+	undef $curr_Logfile;
+    }
+    die if not defined $fh;
+
     my $s;
     foreach $s (@_) {
 	if ($CGI) {
 	    require HTML::FromText;
-	    print "\n<pre>", HTML::FromText::text2html($s), "</pre>\n";
+	    print $fh "\n<pre>", HTML::FromText::text2html($s), "</pre>\n"
+	      or die "cannot print to filehandle: $!";
 	}
 	else {
-	    print STDERR "$s\n";
+	    print $fh "$s\n"
+	      or die "cannot print to filehandle: $!";
 	}
     }
 }

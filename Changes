@@ -1,4 +1,35 @@
-2000-10-15  Edward Avis,  <epa98@texel26>
+2001-11-28  Edward Avis,  <epa98@voxel24>
+
+	* README: Updated for version 1.1.
+
+	* Makefile.PL:
+	Added HTML::FromText as a dependency (thanks to cpan-testers for
+	spotting this).
+
+2001-02-12  Edward Avis,  <epa98@voxel24>
+
+	* TraceMessages.pm:
+	Reinstated isa(AutoLoader) - otherwise the Makefile goes wrong
+
+2001-02-08  Edward Avis,  <epa98@voxel24>
+
+	* test.pl:
+	Lots of fiddling around trying to make it work after RCS corrupted it; changing variable names
+	to stop that happening again.
+
+2000-11-24  Edward Avis,  <epa98@voxel24>
+
+	* test.pl: Added tests for $Logfile
+
+	* TraceMessages.pm:
+	Added $Logfile letting you change where messages are printed
+
+2000-10-16  Edward Avis,  <epa98@voxel24>
+
+	* mkdist:
+	Load TraceMessages.pm from current directory to get version (not random one lying around in PERL5LIB)
+
+2000-10-15  Edward Avis,  <epa98@voxel24>
 
 	* mkdist: Works
 
