@@ -1,0 +1,26 @@
+2000-10-15  Edward Avis,  <epa98@texel26>
+
+	* mkdist: Works
+
+	* MANIFEST: Sort properly - working around locale bug in GNU sort
+
+	* MANIFEST: sorted
+
+	* mkdist: New file.
+
+	* MANIFEST: Added README
+
+	* README: New file.
+
+	* TraceMessages.pm:
+	d() returns empty string (instead of undef) if trace is off - stops warnings
+
+	* test.pl: Test code for t(), d(), check_argv() and $On, $CGI flags
+
+	* TraceMessages.pm:
+	Remember to require HTML::FromText before trying to use it
+
+	* TraceMessages.pm: First working version - based on Dbg.pm
+
+	* test.pl, TraceMessages.pm, Makefile.PL, MANIFEST: New file.
+

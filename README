@@ -1,0 +1,30 @@
+Log::TraceMessages, version 1.0
+
+This module is a better way of putting 'hello there' trace messages in
+your code.  It lets you turn tracing on and off without commenting out
+trace statements, and provides other useful things like HTML-ified
+trace messages for CGI scripts and an easy way to trace out data
+structures using Data::Dumper.
+
+From the pod documentation:
+
+  use Log::TraceMessages qw(t d);
+  $Log::TraceMessages::On = 1;
+  t 'got to here';
+  t 'value of $a is ' . d($a);
+  {
+      local $Log::TraceMessages::On = 0;
+      t 'this message will not be printed';
+  }
+
+  # For a CGI program producing HTML
+  $Log::TraceMessages::CGI = 1;
+
+  # Or to turn on trace if there's a command-line argument '--trace'
+  Log::TraceMessages::check_argv();
+
+This is free software and you may distribute it under the same terms
+as perl itself.  There is no warranty.
+
+-- Ed Avis, epa98@doc.ic.ac.uk, 2000-10-15
+
