@@ -1,4 +1,4 @@
-Log::TraceMessages, version 1.2
+Log::TraceMessages, version 1.4
 
 This module is a better way of putting 'hello there' trace messages in
 your code.  It lets you turn tracing on and off without commenting out
@@ -31,7 +31,6 @@ From the pod documentation:
 This is free software and you may distribute it under the same terms
 as perl itself.  There is no warranty.
 
-This version has no real changes over 1.1, just a formatting change
-which I hope will let CPAN pick up the package correctly.
+Since version 1.3 the test suite has been fixed to work on Windows.
 
--- Ed Avis, ed@membled.com, 2002-10-25
+-- Ed Avis, ed@membled.com, 2003-12-05

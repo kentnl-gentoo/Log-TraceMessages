@@ -10,7 +10,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-my $VERSION = '1.3';
+my $VERSION = '1.4';
 BEGIN { $| = 1; print "1..11\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Log::TraceMessages qw(t d trace dmp);
@@ -59,6 +59,10 @@ print "contents of $tmp: $contents\n" if $debug;
 print 'not ' if $out->[0] ne '' or $out->[1] ne ''
              or $contents ne "$test_str\n";
 print "ok 5\n";
+# On Windows the file must be closed before unlinking, and that
+# doesn't happen until the next t().
+#
+grab_output("t('')");
 unlink $tmp or die "cannot unlink $tmp: $!";
 
 # Test 6 - t() with $CGI == 1 after setting a different logfile
@@ -73,6 +77,7 @@ print "contents of $tmp: $contents\n" if $debug;
 print 'not ' if $out->[0] ne '' or $out->[1] ne ''
              or $contents ne "\n<pre>test &lt; &gt; &amp;</pre>\n";
 print "ok 6\n";
+grab_output("t('')"); # Windows - see above
 unlink $tmp or die "cannot unlink $tmp: $!";
 
 # Test 7 - quick check that trace() works (no logfile now)

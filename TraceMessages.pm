@@ -6,7 +6,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 require Exporter; require AutoLoader; @ISA = qw(Exporter AutoLoader);
 @EXPORT = qw(); @EXPORT_OK = qw(t trace d dmp);
 use vars '$VERSION';
-$VERSION = '1.3';
+$VERSION = '1.4';
 
 use FileHandle;
 
@@ -159,8 +159,8 @@ sub trace(@) { &t }
 
 =item d(scalar)
 
-Return a string representation of a scalar's value suitable for use in
-a trace statement.  This is just a wrapper for Data::Dumper.
+Return a string representation of a scalarE<39>s value suitable for
+use in a trace statement.  This is just a wrapper for Data::Dumper.
 
 C<d()> will exit with '' if trace is not turned on.  This is to
 stop your program being slowed down by generating lots of strings for
@@ -205,7 +205,8 @@ sub check_argv() {
     foreach (@ARGV) {
         if ($_ eq '--trace') {
 	    $On = 1;
-        } else {
+        }
+	else {
 	    push @new_argv, $_;
         }
     }
