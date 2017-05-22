@@ -21,7 +21,7 @@ print "ok 1\n";
 ######################### End of black magic.
 
 use strict;
-use POSIX qw(tmpnam);
+use File::Temp qw(tempfile);
 my $test_str = 'test < > &';
 my $debug = 0;
 my $out;
@@ -50,7 +50,7 @@ print "ok 4\n";
 # Test 5 - t() with $CGI == 0 after setting a logfile
 ${Log::TraceMessages::On} = 1;
 ${Log::TraceMessages::CGI} = 0;
-my $tmp = tmpnam();
+my ($fd, $tmp) = tempfile();
 ${Log::TraceMessages::Logfile} = $tmp;
 $out = grab_output("t('$test_str')");
 ${Log::TraceMessages::Logfile} = undef;
@@ -68,7 +68,7 @@ unlink $tmp or die "cannot unlink $tmp: $!";
 # Test 6 - t() with $CGI == 1 after setting a different logfile
 ${Log::TraceMessages::On} = 1;
 ${Log::TraceMessages::CGI} = 1;
-my $tmp = tmpnam();
+my ($fd, $tmp) = tempfile();
 ${Log::TraceMessages::Logfile} = $tmp;
 $out = grab_output("t('$test_str')");
 ${Log::TraceMessages::Logfile} = undef;
@@ -124,8 +124,8 @@ print "ok 11\n";
 sub grab_output($) {
     die 'usage: grab_stderr(string to eval)' if @_ != 1;
     my $code = shift;
-    require POSIX;
-    my $tmp_o = POSIX::tmpnam(); my $tmp_e = POSIX::tmpnam();
+    my ($fd_o, $tmp_o) = File::Temp::tempfile();
+    my ($fd_e, $tmp_e) = File::Temp::tempfile();
     local *OLDOUT, *OLDERR;
 
     print "running code: $code\n" if $debug;

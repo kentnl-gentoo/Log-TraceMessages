@@ -4,5 +4,8 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'	   => 'Log::TraceMessages',
     'VERSION_FROM' => 'TraceMessages.pm', # finds $VERSION
-    'PREREQ_PM'    => { 'HTML::FromText' => '1.004' },
+    'PREREQ_PM'    => {
+        'File::Temp' => '0',
+        'HTML::FromText' => '1.004',
+    },
 );
